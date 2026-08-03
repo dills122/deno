@@ -1,0 +1,11 @@
+diff --git a/ops_builtin.rs b/ops_builtin.rs
+--- a/ops_builtin.rs
++++ b/ops_builtin.rs
+@@ -45,6 +45,7 @@ macro_rules! builtin_ops {
+ 
+ builtin_ops! {
+   ops_builtin_v8::op_get_extras_binding_object,
++  op_print,
+   ops_builtin_v8::op_get_ext_import_meta_proto,
+   ops_builtin_v8::op_set_captured_bootstrap
+ }

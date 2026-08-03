@@ -1,0 +1,31 @@
+name: Capsule governed deno_core
+
+on:
+  pull_request:
+    paths:
+      - ".github/CODEOWNERS"
+      - ".github/workflows/capsule-governed-deno-core.yml"
+      - "docs/capsule/governed-deno-core.md"
+      - "libs/core/modules/module_map_data.rs"
+      - "libs/core/ops_builtin.rs"
+      - "tools/capsule/governed-deno-core/**"
+  push:
+    branches:
+      - "codex/governed-deno-core-0.409.0"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  governed-source-and-fixtures:
+    name: Governed source and fixed fixtures
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - name: Check out exact review state
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
+        with:
+          fetch-depth: 0
+      - name: Verify governed source, fixtures, and restoration mutation
+        run: node tools/capsule/governed-deno-core/verify.mjs
