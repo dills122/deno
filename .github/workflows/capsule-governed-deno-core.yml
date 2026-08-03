@@ -31,6 +31,8 @@ jobs:
           fetch-depth: 0
       - name: Verify governed source, fixtures, and restoration mutation
         run: node tools/capsule/governed-deno-core/verify.mjs
+      - name: Initialize formatter support submodule
+        run: git submodule update --init --recursive --depth=1 -- tests/util/std
       - name: Install exact formatter runtime
         uses: denoland/setup-deno@667a34cdef165d8d2b2e98dde39547c9daac7282
         with:
