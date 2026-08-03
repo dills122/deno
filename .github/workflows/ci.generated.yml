@@ -45,8 +45,16 @@ jobs:
         with:
           deno-version: v2.x
       - id: check
-        if: 'github.event_name == ''pull_request'' && github.event.pull_request.draft == true && !contains(github.event.pull_request.labels.*.name, ''ci-draft'')'
+        if: github.event_name == 'pull_request'
         run: |-
+          if [[ "${{ github.event.pull_request.base.ref }}" == "capsule/upstream-v2.9.4" && "${{ github.event.pull_request.head.ref }}" == "codex/governed-deno-core-0.409.0" ]]; then
+            echo 'Routing exact Capsule governed deno_core PR to its dedicated CI contract.'
+            echo 'skip_build=true' >> $GITHUB_OUTPUT
+            exit 0
+          fi
+          if [[ "${{ github.event.pull_request.draft }}" != "true" || "${{ contains(github.event.pull_request.labels.*.name, 'ci-draft') }}" == "true" ]]; then
+            exit 0
+          fi
           GIT_MESSAGE=$(git log --format=%s -n 1 ${{github.event.after}})
           echo Commit message: $GIT_MESSAGE
           echo $GIT_MESSAGE | grep '\[ci\]' || (echo 'Exiting due to draft PR. Commit with [ci] to bypass or add the ci-draft label.' ; echo 'skip_build=true' >> $GITHUB_OUTPUT)

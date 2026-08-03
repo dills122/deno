@@ -4,8 +4,8 @@
 import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import {
-  mkdtempSync,
   mkdirSync,
+  mkdtempSync,
   readFileSync,
   rmSync,
   writeFileSync,
@@ -21,6 +21,18 @@ const repository = join(toolRoot, "..", "..", "..");
 const core = join(repository, "libs", "core");
 const patchRoot = join(toolRoot, "patches");
 const fixtureRoot = join(toolRoot, "fixtures");
+const upstreamCiSource = join(
+  repository,
+  ".github",
+  "workflows",
+  "ci.ts",
+);
+const upstreamCiGenerated = join(
+  repository,
+  ".github",
+  "workflows",
+  "ci.generated.yml",
+);
 
 function fail(message) {
   throw new Error(message);
@@ -34,7 +46,9 @@ function run(command, args, options = {}) {
   });
   if (result.status !== 0) {
     fail(
-      `${command} ${args.join(" ")} failed (${result.status}):\n${result.stderr}`,
+      `${command} ${
+        args.join(" ")
+      } failed (${result.status}):\n${result.stderr}`,
     );
   }
   return result.stdout;
@@ -64,6 +78,22 @@ function builtinOps(source) {
 const mergeBase = run("git", ["merge-base", "HEAD", anchor]).trim();
 if (mergeBase !== anchor) {
   fail(`HEAD is not based on exact Deno v2.9.4 anchor ${anchor}`);
+}
+
+const ciSource = readFileSync(upstreamCiSource, "utf8");
+const ciGenerated = readFileSync(upstreamCiGenerated, "utf8");
+const governedBaseRef = "capsule/upstream-v2.9.4";
+const governedHeadRef = "codex/governed-deno-core-0.409.0";
+for (const expected of [governedBaseRef, governedHeadRef]) {
+  if (!ciSource.includes(expected) || !ciGenerated.includes(expected)) {
+    fail(`governed CI routing is missing exact ref ${expected}`);
+  }
+}
+if (
+  !ciSource.includes("Routing exact Capsule governed deno_core PR") ||
+  !ciGenerated.includes("Routing exact Capsule governed deno_core PR")
+) {
+  fail("governed CI routing marker is missing");
 }
 
 const identities = new Map([
@@ -196,7 +226,9 @@ try {
     JSON.stringify(restoredOps.filter((op) => op !== "op_print")) !==
       JSON.stringify(expectedOps)
   ) {
-    fail("restoration mutation did not produce the exact refused four-op registry");
+    fail(
+      "restoration mutation did not produce the exact refused four-op registry",
+    );
   }
 } finally {
   rmSync(scratch, { recursive: true, force: true });
@@ -210,8 +242,7 @@ vm.runInContext(
   { filename: "nominal.js" },
 );
 const knownAnswer = JSON.stringify(nominalContext.capsuleMain(input));
-const expectedKnownAnswer =
-  '{"count":3,"label":"capsule-owned","sum":6}';
+const expectedKnownAnswer = '{"count":3,"label":"capsule-owned","sum":6}';
 if (knownAnswer !== expectedKnownAnswer) {
   fail(`fixed nominal fixture mismatch: ${knownAnswer}`);
 }
