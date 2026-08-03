@@ -1,0 +1,13 @@
+diff --git a/modules/module_map_data.rs b/modules/module_map_data.rs
+index 5bf9111..11e2b8d 100644
+--- a/modules/module_map_data.rs
++++ b/modules/module_map_data.rs
+@@ -456,5 +456,8 @@ impl ModuleMapData {
+     self.by_name.drain(|_, module_type, name, module| {
+       ser.by_name.push((name, module_type.clone(), module));
+     });
++    ser
++      .by_name
++      .sort_by(|left, right| left.0.as_str().cmp(right.0.as_str()));
+ 
+     ser.lazy_esm_specifiers = self

@@ -496,10 +496,24 @@ function getOsSpecificSteps({
 // The pre_build step is used to skip running the CI on draft PRs and to not even
 // start the build job. This can be overridden by adding [ci] to the commit title
 
+// The Capsule-governed deno_core source line intentionally cannot build the full
+// Deno CLI: the CLI snapshots import built-in ops that this construction
+// physically omits. Route only the exact frozen-base/governed-head PR to its
+// dedicated read-only workflow. Every other branch and PR retains upstream CI.
+const capsuleGovernedBaseRef = "capsule/upstream-v2.9.4";
+const capsuleGovernedHeadRef = "codex/governed-deno-core-0.409.0";
+
 const preBuildCheckStep = step({
   id: "check",
-  if: conditions.hasPrLabel("ci-draft").not(),
   run: [
+    `if [[ "\${{ github.event.pull_request.base.ref }}" == "${capsuleGovernedBaseRef}" && "\${{ github.event.pull_request.head.ref }}" == "${capsuleGovernedHeadRef}" ]]; then`,
+    "  echo 'Routing exact Capsule governed deno_core PR to its dedicated CI contract.'",
+    "  echo 'skip_build=true' >> $GITHUB_OUTPUT",
+    "  exit 0",
+    "fi",
+    `if [[ "\${{ github.event.pull_request.draft }}" != "true" || "\${{ contains(github.event.pull_request.labels.*.name, 'ci-draft') }}" == "true" ]]; then`,
+    "  exit 0",
+    "fi",
     "GIT_MESSAGE=$(git log --format=%s -n 1 ${{github.event.after}})",
     "echo Commit message: $GIT_MESSAGE",
     "echo $GIT_MESSAGE | grep '\\[ci\\]' || (echo 'Exiting due to draft PR. Commit with [ci] to bypass or add the ci-draft label.' ; echo 'skip_build=true' >> $GITHUB_OUTPUT)",
@@ -535,7 +549,7 @@ const preBuildJob = job("pre_build", {
   steps: step.if(isPr)(
     cloneRepoStep,
     installDenoStep,
-    step.if(conditions.isDraftPr())(preBuildCheckStep),
+    preBuildCheckStep,
     denoCoreChangesCheckStep,
     docsOnlyChangesCheckStep,
   ),

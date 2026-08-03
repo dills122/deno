@@ -1,0 +1,1 @@
+globalThis.capsuleMain = () => ({ shouldNotRun: true });

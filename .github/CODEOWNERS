@@ -1,0 +1,7 @@
+# Capsule governed deno_core source line.
+/libs/core/ops_builtin.rs @dills122
+/libs/core/modules/module_map_data.rs @dills122
+/tools/capsule/governed-deno-core/ @dills122
+/docs/capsule/governed-deno-core.md @dills122
+/.github/workflows/capsule-governed-deno-core.yml @dills122
+/.github/CODEOWNERS @dills122

@@ -456,6 +456,9 @@ impl ModuleMapData {
     self.by_name.drain(|_, module_type, name, module| {
       ser.by_name.push((name, module_type.clone(), module));
     });
+    ser
+      .by_name
+      .sort_by(|left, right| left.0.as_str().cmp(right.0.as_str()));
 
     ser.lazy_esm_specifiers = self
       .known_lazy_esm
