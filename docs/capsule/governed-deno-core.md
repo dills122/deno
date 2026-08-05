@@ -63,10 +63,10 @@ The historical `capsule/upstream-v2.9.4` name now points at the latest accepted
 merge rather than the official anchor. It is retained and locked for recovery,
 not reused as a future review target. The fork default is the locked r3 accepted
 merge. The current mutable target is `capsule/review-v2.9.4-r4`, created at that
-exact accepted commit, `3fa21d1ae7705ab4bcb4bc98955f25301b20122a`.
-Each later change creates a fresh `capsule/review-v2.9.4-rN` target from the
-preceding accepted merge plus an explicit disposable `codex/` head; it never
-merges upstream `main` wholesale into this pinned line.
+exact accepted commit, `3fa21d1ae7705ab4bcb4bc98955f25301b20122a`. Each later
+change creates a fresh `capsule/review-v2.9.4-rN` target from the preceding
+accepted merge plus an explicit disposable `codex/` head; it never merges
+upstream `main` wholesale into this pinned line.
 
 ## Ownership and change policy
 

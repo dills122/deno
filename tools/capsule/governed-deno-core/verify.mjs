@@ -113,7 +113,9 @@ for (const expected of [governedReviewPrefix, governedAcceptedPrefix]) {
   }
 }
 if (!governedCiSource.includes("name: Governed admission")) {
-  fail("dedicated governed workflow is missing stable Governed admission check");
+  fail(
+    "dedicated governed workflow is missing stable Governed admission check",
+  );
 }
 const rustToolchainStep = governedCiSource.indexOf(
   "name: Install pinned Rust toolchain",
