@@ -1,0 +1,67 @@
+{
+  "objectType": "capsule.governed-deno-core.c2b-fixed-fixture-binding",
+  "schemaVersion": 1,
+  "identity": "capsule.governed-deno-core.c2b-fixed-fixture/c1-c2a-v1",
+  "status": "development-candidate-only-not-execution-or-admission",
+  "predecessors": {
+    "c1": {
+      "bytes": 9289,
+      "sha256": "d5d75e638a15be6c9f4a3230d17309d085f6ec103a73b64d9e0fd656a5423c9e"
+    },
+    "c2a": {
+      "bytes": 26850,
+      "sha256": "d4ce88888186266f5d251e6246c889b1fd46d7746bb0ba56bcc4b3ce4675992f"
+    }
+  },
+  "source": {
+    "path": "main.mjs",
+    "mediaType": "application/capsule.javascript-source;v=0;module=esm",
+    "bytes": 103,
+    "sha256": "c8e940feb89b342de2d5e6bd13c413226676de9a539fce34c4107516e635b475",
+    "maximumBytes": 262144
+  },
+  "input": {
+    "mediaType": "application/json",
+    "encoding": "capsule.canonical-inline-json/v0",
+    "bytes": 36,
+    "sha256": "9de0c909cfb111bd99c3b0b5f7a10972894270c2867022a71b6b6f3c0cd1af6e",
+    "maximumBytes": 262144
+  },
+  "completion": {
+    "mediaType": "application/json",
+    "bytes": 35,
+    "sha256": "bb7234ee486b0fbccc2091859ec93499e6a14ea7d6e091cdef60a0e2a6e8371c",
+    "maximumBytes": 262144,
+    "commit": "required-last"
+  },
+  "runtimeSurface": {
+    "builtinOps": [
+      "op_get_ext_import_meta_proto",
+      "op_get_extras_binding_object",
+      "op_set_captured_bootstrap"
+    ],
+    "extensions": [],
+    "moduleLoader": "none",
+    "inspector": false,
+    "v8Flags": [
+      "--jitless",
+      "--random-seed=42"
+    ],
+    "inheritedDescriptors": [
+      0,
+      1,
+      2
+    ],
+    "workloadBytes": "embedded-exact-retained-c2a-fixture"
+  },
+  "authority": {
+    "fixedFixtureOnly": true,
+    "arbitrarySource": false,
+    "callerPaths": false,
+    "callerArguments": false,
+    "callerEnvironment": false,
+    "runtimeSelection": false,
+    "runtimeAdmission": false,
+    "c2bGuestAuthorized": false
+  }
+}
