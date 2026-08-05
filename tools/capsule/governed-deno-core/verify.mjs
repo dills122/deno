@@ -115,6 +115,19 @@ for (const expected of [governedReviewPrefix, governedAcceptedPrefix]) {
 if (!governedCiSource.includes("name: Governed admission")) {
   fail("dedicated governed workflow is missing stable Governed admission check");
 }
+const rustToolchainStep = governedCiSource.indexOf(
+  "name: Install pinned Rust toolchain",
+);
+const canonicalFormatStep = governedCiSource.indexOf(
+  "name: Check canonical repository formatting",
+);
+if (
+  rustToolchainStep === -1 ||
+  canonicalFormatStep === -1 ||
+  rustToolchainStep >= canonicalFormatStep
+) {
+  fail("pinned Rust toolchain must be installed before repository formatting");
+}
 if (
   !ciSource.includes("Routing exact Capsule governed deno_core PR") ||
   !ciGenerated.includes("Routing exact Capsule governed deno_core PR")
