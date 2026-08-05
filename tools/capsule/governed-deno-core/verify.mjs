@@ -33,6 +33,12 @@ const upstreamCiGenerated = join(
   "workflows",
   "ci.generated.yml",
 );
+const governedCi = join(
+  repository,
+  ".github",
+  "workflows",
+  "capsule-governed-deno-core.yml",
+);
 
 function fail(message) {
   throw new Error(message);
@@ -82,11 +88,24 @@ if (mergeBase !== anchor) {
 
 const ciSource = readFileSync(upstreamCiSource, "utf8");
 const ciGenerated = readFileSync(upstreamCiGenerated, "utf8");
+const governedCiSource = readFileSync(governedCi, "utf8");
 const governedBaseRef = "capsule/upstream-v2.9.4";
 const governedHeadRef = "codex/governed-deno-core-0.409.0";
-for (const expected of [governedBaseRef, governedHeadRef]) {
+const c2bFixedFixtureHeadRef = "codex/c2b-fixed-fixture-runtime-0.409.0";
+for (
+  const expected of [
+    governedBaseRef,
+    governedHeadRef,
+    c2bFixedFixtureHeadRef,
+  ]
+) {
   if (!ciSource.includes(expected) || !ciGenerated.includes(expected)) {
     fail(`governed CI routing is missing exact ref ${expected}`);
+  }
+}
+for (const expected of [governedHeadRef, c2bFixedFixtureHeadRef]) {
+  if (!governedCiSource.includes(expected)) {
+    fail(`dedicated governed workflow is missing exact head ${expected}`);
   }
 }
 if (
@@ -271,9 +290,14 @@ if (sealAnswer !== expectedSealAnswer) {
   fail(`fixed sealed-global fixture mismatch: ${sealAnswer}`);
 }
 
+const c2bFixtureVerification = run("node", [
+  join(toolRoot, "c2b-fixture", "verify.mjs"),
+]);
+
 console.log(`upstream.anchor=${anchor}`);
 console.log(`builtin.ops=${expectedOps.length}`);
 console.log(`fixture.nominal=${knownAnswer}`);
 console.log(`fixture.seal=${sealAnswer}`);
 console.log("restoration.op_print=refused-four-op-registry");
+console.log(c2bFixtureVerification.trim());
 console.log("admission=none");

@@ -47,7 +47,7 @@ jobs:
       - id: check
         if: github.event_name == 'pull_request'
         run: |-
-          if [[ "${{ github.event.pull_request.base.ref }}" == "capsule/upstream-v2.9.4" && "${{ github.event.pull_request.head.ref }}" == "codex/governed-deno-core-0.409.0" ]]; then
+          if [[ "${{ github.event.pull_request.base.ref }}" == "capsule/upstream-v2.9.4" && ( "${{ github.event.pull_request.head.ref }}" == "codex/governed-deno-core-0.409.0" || "${{ github.event.pull_request.head.ref }}" == "codex/c2b-fixed-fixture-runtime-0.409.0" ) ]]; then
             echo 'Routing exact Capsule governed deno_core PR to its dedicated CI contract.'
             echo 'skip_build=true' >> $GITHUB_OUTPUT
             exit 0

@@ -502,11 +502,12 @@ function getOsSpecificSteps({
 // dedicated read-only workflow. Every other branch and PR retains upstream CI.
 const capsuleGovernedBaseRef = "capsule/upstream-v2.9.4";
 const capsuleGovernedHeadRef = "codex/governed-deno-core-0.409.0";
+const capsuleC2BFixedFixtureHeadRef = "codex/c2b-fixed-fixture-runtime-0.409.0";
 
 const preBuildCheckStep = step({
   id: "check",
   run: [
-    `if [[ "\${{ github.event.pull_request.base.ref }}" == "${capsuleGovernedBaseRef}" && "\${{ github.event.pull_request.head.ref }}" == "${capsuleGovernedHeadRef}" ]]; then`,
+    `if [[ "\${{ github.event.pull_request.base.ref }}" == "${capsuleGovernedBaseRef}" && ( "\${{ github.event.pull_request.head.ref }}" == "${capsuleGovernedHeadRef}" || "\${{ github.event.pull_request.head.ref }}" == "${capsuleC2BFixedFixtureHeadRef}" ) ]]; then`,
     "  echo 'Routing exact Capsule governed deno_core PR to its dedicated CI contract.'",
     "  echo 'skip_build=true' >> $GITHUB_OUTPUT",
     "  exit 0",

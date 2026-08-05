@@ -102,10 +102,12 @@ canonical repository formatter, Rust formatting, and
 
 The ordinary upstream CI workflow remains unchanged for upstream-compatible
 branches and pull requests. Its pre-build router skips full-Deno jobs only when
-both sides of a pull request match this exact governed line:
+the base and one of the two explicitly governed heads match:
 
 - base: `capsule/upstream-v2.9.4`; and
-- head: `codex/governed-deno-core-0.409.0`.
+- original passive-contract head: `codex/governed-deno-core-0.409.0`; or
+- fixed-fixture development-candidate head:
+  `codex/c2b-fixed-fixture-runtime-0.409.0`.
 
 This exception is structural rather than cosmetic. Full Deno's `runtime_main`
 snapshot imports omitted operations including
@@ -150,3 +152,26 @@ The dedicated CI compiles the exact governed crate but does not run full-Deno or
 upstream `deno_core` snapshot suites because those suites require operations the
 governed construction deliberately excludes. A fork-native bounded runtime
 build/test harness remains required before any release or admission review.
+
+## Fixed-fixture C2B development candidate
+
+The immutable supplement under `tools/capsule/governed-deno-core/c2b-fixture/`
+binds only the exact retained C1 and C2A passive-contract bytes to one
+fixed-fixture development candidate. It does not overwrite or reinterpret either
+predecessor. Its identity is
+`capsule.governed-deno-core.c2b-fixed-fixture/c1-c2a-v1`; its binding SHA-256 is
+`41350bcfc854338ded5e62f77475daf86486351356104dbbf647a8f8b5f11946`.
+
+The generator first verifies the complete retained C1 and C2A objects, then
+derives the source, input, completion, media, lengths, caps, and digests without
+manual duplication or normalization. The resulting candidate embeds the one
+103-byte source and one 36-byte input. It accepts no caller paths, arguments, or
+environment, has no module loader or extensions, disables the inspector and V8
+string code generation, uses the fixed snapshot and `--jitless`, and checks the
+exact 35-byte completion before release.
+
+This supplement is source for a separately retained controlled build. It does
+not authorize a VM or guest launch, arbitrary JavaScript, runtime selection or
+admission, product wiring, signing, publication, or installation. C2B remains
+blocked pending separate owned-guest authorization; `RUNTIME-001` and `VMM-001`
+remain unsupported.
