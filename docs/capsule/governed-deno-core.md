@@ -49,20 +49,20 @@ This fork is a Capsule-governed product line. Its `main` branch is a lagging
 upstream-integration mirror only; a commit on `main` is not adopted into
 Capsule. The retained v2.9.4 identities are:
 
-| Role | Protected ref | Commit |
-| --- | --- | --- |
-| Official anchor | `capsule/anchor-v2.9.4` | `14eea3160ae5834476aa3b9d317b8d41d991b982` |
-| First reviewed head | `capsule/reviewed-head-v2.9.4-r1` | `9adb0b68b55bca81644827f1e7749a3acb091bed` |
-| First accepted merge | `capsule/accepted-v2.9.4-r1` | `ea18b9dc21ff8ebd19347be7095f47937ee14ec2` |
-| C2B reviewed head | `capsule/reviewed-head-v2.9.4-r2` | `29b71f06c2df5ab06721ccbb7bc744fb8104356e` |
-| Latest accepted merge | `capsule/accepted-v2.9.4-r2` | `4cce46bafccd0df9d1709cf406cd03c05b5daa0b` |
+| Role                  | Protected ref                     | Commit                                     |
+| --------------------- | --------------------------------- | ------------------------------------------ |
+| Official anchor       | `capsule/anchor-v2.9.4`            | `14eea3160ae5834476aa3b9d317b8d41d991b982` |
+| First reviewed head   | `capsule/reviewed-head-v2.9.4-r1` | `9adb0b68b55bca81644827f1e7749a3acb091bed` |
+| First accepted merge  | `capsule/accepted-v2.9.4-r1`      | `ea18b9dc21ff8ebd19347be7095f47937ee14ec2` |
+| C2B reviewed head     | `capsule/reviewed-head-v2.9.4-r2` | `29b71f06c2df5ab06721ccbb7bc744fb8104356e` |
+| Latest accepted merge | `capsule/accepted-v2.9.4-r2`      | `4cce46bafccd0df9d1709cf406cd03c05b5daa0b` |
 
 The historical `capsule/upstream-v2.9.4` name now points at the latest accepted
 merge rather than the official anchor. It is retained and locked for recovery,
 not reused as a future review target. The fresh r3 review target is
-`capsule/review-v2.9.4-r3`, created from the exact r2 accepted merge. Work occurs
-on an explicit disposable `codex/` head and never by merging upstream `main`
-wholesale into this pinned line.
+`capsule/review-v2.9.4-r3`, created from the exact r2 accepted merge. Work
+occurs on an explicit disposable `codex/` head and never by merging upstream
+`main` wholesale into this pinned line.
 
 ## Ownership and change policy
 
@@ -131,10 +131,9 @@ one of the explicitly recorded base/head pairs matches:
   `codex/c2b-fixed-fixture-runtime-0.409.0`.
 
 The fork-governance r3 review is separately routed only for base
-`capsule/review-v2.9.4-r3` and head
-`codex/govern-fork-roles-v2.9.4-r3`. Future governed updates must add their own
-fresh versioned target and exact head pair; they must not broaden this exception
-to arbitrary branches.
+`capsule/review-v2.9.4-r3` and head `codex/govern-fork-roles-v2.9.4-r3`. Future
+governed updates must add their own fresh versioned target and exact head pair;
+they must not broaden this exception to arbitrary branches.
 
 This exception is structural rather than cosmetic. Full Deno's `runtime_main`
 snapshot imports omitted operations including
