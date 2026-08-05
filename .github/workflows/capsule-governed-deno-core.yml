@@ -2,20 +2,13 @@ name: Capsule governed deno_core
 
 on:
   pull_request:
-    paths:
-      - '.github/CODEOWNERS'
-      - '.github/workflows/ci.generated.yml'
-      - '.github/workflows/ci.ts'
-      - '.github/workflows/capsule-governed-deno-core.yml'
-      - 'docs/capsule/governed-deno-core.md'
-      - 'libs/core/modules/module_map_data.rs'
-      - 'libs/core/ops_builtin.rs'
-      - 'tools/capsule/governed-deno-core/**'
+    branches:
+      - 'capsule/review-v2.9.4-r*'
+      - 'capsule/accepted-v2.9.4-r*'
   push:
     branches:
-      - 'codex/governed-deno-core-0.409.0'
-      - 'codex/c2b-fixed-fixture-runtime-0.409.0'
-      - 'codex/govern-fork-roles-v2.9.4-r3'
+      - 'capsule/review-v2.9.4-r*'
+      - 'capsule/accepted-v2.9.4-r*'
   workflow_dispatch:
 
 permissions:
@@ -23,7 +16,7 @@ permissions:
 
 jobs:
   governed-source-and-fixtures:
-    name: Governed source, format, and compile
+    name: Governed admission
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
