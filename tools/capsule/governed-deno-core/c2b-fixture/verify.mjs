@@ -2,13 +2,17 @@
 // Static verification for the fixed-fixture C2B development candidate.
 
 import { createHash } from "node:crypto";
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import vm from "node:vm";
 
 const root = dirname(fileURLToPath(import.meta.url));
 const expected = new Map([
+  [
+    "README.md",
+    "ebb36bbf5f33246f63de834f22897476762e952e1936a678cd06ecb002f202b0",
+  ],
   [
     "binding.json",
     "41350bcfc854338ded5e62f77475daf86486351356104dbbf647a8f8b5f11946",
@@ -49,6 +53,23 @@ function fail(message) {
 
 function sha256(bytes) {
   return createHash("sha256").update(bytes).digest("hex");
+}
+
+function inventory(directory, prefix = "") {
+  return readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
+    const relative = prefix ? `${prefix}/${entry.name}` : entry.name;
+    return entry.isDirectory()
+      ? inventory(join(directory, entry.name), relative)
+      : [relative];
+  });
+}
+
+const expectedInventory = [...expected.keys(), "verify.mjs"].sort();
+const actualInventory = inventory(root).sort();
+if (JSON.stringify(actualInventory) !== JSON.stringify(expectedInventory)) {
+  fail(
+    `fixed-fixture inventory mismatch: ${JSON.stringify(actualInventory)}`,
+  );
 }
 
 for (const [relative, digest] of expected) {

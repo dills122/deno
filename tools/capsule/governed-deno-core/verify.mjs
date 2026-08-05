@@ -160,6 +160,10 @@ const identities = new Map([
     "fixtures/refused-input.json",
     "2fbd3add3d9ad7c30442cdfe0720cbeb6b932b64ef14eaf902729591bff00d96",
   ],
+  [
+    "c2b-fixture/verify.mjs",
+    "6e28b4f39f2e16a709474a373417e0f4db5d1c3eb1c4267f727f1052fe698e47",
+  ],
 ]);
 for (const [relative, expected] of identities) {
   assertSha256(relative, expected);
