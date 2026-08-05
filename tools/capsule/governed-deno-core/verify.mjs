@@ -92,31 +92,43 @@ const governedCiSource = readFileSync(governedCi, "utf8");
 const governedBaseRef = "capsule/upstream-v2.9.4";
 const governedHeadRef = "codex/governed-deno-core-0.409.0";
 const c2bFixedFixtureHeadRef = "codex/c2b-fixed-fixture-runtime-0.409.0";
-const forkGovernanceBaseRef = "capsule/review-v2.9.4-r3";
-const forkGovernanceHeadRef = "codex/govern-fork-roles-v2.9.4-r3";
+const governedReviewPrefix = "capsule/review-v2.9.4-r";
+const governedAcceptedPrefix = "capsule/accepted-v2.9.4-r";
 for (
   const expected of [
     governedBaseRef,
     governedHeadRef,
     c2bFixedFixtureHeadRef,
-    forkGovernanceBaseRef,
-    forkGovernanceHeadRef,
+    governedReviewPrefix,
+    governedAcceptedPrefix,
   ]
 ) {
   if (!ciSource.includes(expected) || !ciGenerated.includes(expected)) {
     fail(`governed CI routing is missing exact ref ${expected}`);
   }
 }
-for (
-  const expected of [
-    governedHeadRef,
-    c2bFixedFixtureHeadRef,
-    forkGovernanceHeadRef,
-  ]
-) {
+for (const expected of [governedReviewPrefix, governedAcceptedPrefix]) {
   if (!governedCiSource.includes(expected)) {
-    fail(`dedicated governed workflow is missing exact head ${expected}`);
+    fail(`dedicated governed workflow is missing generic target ${expected}`);
   }
+}
+if (!governedCiSource.includes("name: Governed admission")) {
+  fail(
+    "dedicated governed workflow is missing stable Governed admission check",
+  );
+}
+const rustToolchainStep = governedCiSource.indexOf(
+  "name: Install pinned Rust toolchain",
+);
+const canonicalFormatStep = governedCiSource.indexOf(
+  "name: Check canonical repository formatting",
+);
+if (
+  rustToolchainStep === -1 ||
+  canonicalFormatStep === -1 ||
+  rustToolchainStep >= canonicalFormatStep
+) {
+  fail("pinned Rust toolchain must be installed before repository formatting");
 }
 if (
   !ciSource.includes("Routing exact Capsule governed deno_core PR") ||

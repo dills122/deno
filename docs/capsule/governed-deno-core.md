@@ -55,14 +55,18 @@ Capsule. The retained v2.9.4 identities are:
 | First reviewed head   | `capsule/reviewed-head-v2.9.4-r1` | `9adb0b68b55bca81644827f1e7749a3acb091bed` |
 | First accepted merge  | `capsule/accepted-v2.9.4-r1`      | `ea18b9dc21ff8ebd19347be7095f47937ee14ec2` |
 | C2B reviewed head     | `capsule/reviewed-head-v2.9.4-r2` | `29b71f06c2df5ab06721ccbb7bc744fb8104356e` |
-| Latest accepted merge | `capsule/accepted-v2.9.4-r2`      | `4cce46bafccd0df9d1709cf406cd03c05b5daa0b` |
+| Second accepted merge | `capsule/accepted-v2.9.4-r2`      | `4cce46bafccd0df9d1709cf406cd03c05b5daa0b` |
+| r3 reviewed head      | `capsule/reviewed-head-v2.9.4-r3` | `275131fb27dbfdd206fd5309146369fe21a74da9` |
+| Latest accepted merge | `capsule/accepted-v2.9.4-r3`      | `3fa21d1ae7705ab4bcb4bc98955f25301b20122a` |
 
 The historical `capsule/upstream-v2.9.4` name now points at the latest accepted
 merge rather than the official anchor. It is retained and locked for recovery,
-not reused as a future review target. The fresh r3 review target is
-`capsule/review-v2.9.4-r3`, created from the exact r2 accepted merge. Work
-occurs on an explicit disposable `codex/` head and never by merging upstream
-`main` wholesale into this pinned line.
+not reused as a future review target. The fork default is the locked r3 accepted
+merge. The current mutable target is `capsule/review-v2.9.4-r4`, created at that
+exact accepted commit, `3fa21d1ae7705ab4bcb4bc98955f25301b20122a`. Each later
+change creates a fresh `capsule/review-v2.9.4-rN` target from the preceding
+accepted merge plus an explicit disposable `codex/` head; it never merges
+upstream `main` wholesale into this pinned line.
 
 ## Ownership and change policy
 
@@ -139,10 +143,12 @@ one of the explicitly recorded base/head pairs matches:
 - fixed-fixture development-candidate head:
   `codex/c2b-fixed-fixture-runtime-0.409.0`.
 
-The fork-governance r3 review is separately routed only for base
-`capsule/review-v2.9.4-r3` and head `codex/govern-fork-roles-v2.9.4-r3`. Future
-governed updates must add their own fresh versioned target and exact head pair;
-they must not broaden this exception to arbitrary branches.
+Current and future versioned `capsule/review-v2.9.4-r*` and
+`capsule/accepted-v2.9.4-r*` targets route generically to the dedicated
+read-only workflow and its stable `Governed admission` check. The required
+workflow has no path filter, so every pull request to those governed targets
+emits the context. Upstream integration branches retain the ordinary upstream
+matrix; the governed target router does not enable that irrelevant matrix.
 
 This exception is structural rather than cosmetic. Full Deno's `runtime_main`
 snapshot imports omitted operations including

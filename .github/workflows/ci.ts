@@ -498,18 +498,19 @@ function getOsSpecificSteps({
 
 // The Capsule-governed deno_core source line intentionally cannot build the full
 // Deno CLI: the CLI snapshots import built-in ops that this construction
-// physically omits. Route only the exact recorded governed PR pairs to their
-// dedicated read-only workflow. Every other branch and PR retains upstream CI.
+// physically omits. Route historical exact pairs and every current/future
+// versioned governed review or accepted target to the dedicated read-only
+// workflow. Every upstream-integration branch and PR retains upstream CI.
 const capsuleGovernedBaseRef = "capsule/upstream-v2.9.4";
 const capsuleGovernedHeadRef = "codex/governed-deno-core-0.409.0";
 const capsuleC2BFixedFixtureHeadRef = "codex/c2b-fixed-fixture-runtime-0.409.0";
-const capsuleForkGovernanceBaseRef = "capsule/review-v2.9.4-r3";
-const capsuleForkGovernanceHeadRef = "codex/govern-fork-roles-v2.9.4-r3";
+const capsuleGovernedReviewPrefix = "capsule/review-v2.9.4-r";
+const capsuleGovernedAcceptedPrefix = "capsule/accepted-v2.9.4-r";
 
 const preBuildCheckStep = step({
   id: "check",
   run: [
-    `if [[ ( "\${{ github.event.pull_request.base.ref }}" == "${capsuleGovernedBaseRef}" && ( "\${{ github.event.pull_request.head.ref }}" == "${capsuleGovernedHeadRef}" || "\${{ github.event.pull_request.head.ref }}" == "${capsuleC2BFixedFixtureHeadRef}" ) ) || ( "\${{ github.event.pull_request.base.ref }}" == "${capsuleForkGovernanceBaseRef}" && "\${{ github.event.pull_request.head.ref }}" == "${capsuleForkGovernanceHeadRef}" ) ]]; then`,
+    `if [[ ( "\${{ github.event.pull_request.base.ref }}" == "${capsuleGovernedBaseRef}" && ( "\${{ github.event.pull_request.head.ref }}" == "${capsuleGovernedHeadRef}" || "\${{ github.event.pull_request.head.ref }}" == "${capsuleC2BFixedFixtureHeadRef}" ) ) || "\${{ github.event.pull_request.base.ref }}" == "${capsuleGovernedReviewPrefix}"* || "\${{ github.event.pull_request.base.ref }}" == "${capsuleGovernedAcceptedPrefix}"* ]]; then`,
     "  echo 'Routing exact Capsule governed deno_core PR to its dedicated CI contract.'",
     "  echo 'skip_build=true' >> $GITHUB_OUTPUT",
     "  exit 0",
