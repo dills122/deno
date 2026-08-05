@@ -92,18 +92,28 @@ const governedCiSource = readFileSync(governedCi, "utf8");
 const governedBaseRef = "capsule/upstream-v2.9.4";
 const governedHeadRef = "codex/governed-deno-core-0.409.0";
 const c2bFixedFixtureHeadRef = "codex/c2b-fixed-fixture-runtime-0.409.0";
+const forkGovernanceBaseRef = "capsule/review-v2.9.4-r3";
+const forkGovernanceHeadRef = "codex/govern-fork-roles-v2.9.4-r3";
 for (
   const expected of [
     governedBaseRef,
     governedHeadRef,
     c2bFixedFixtureHeadRef,
+    forkGovernanceBaseRef,
+    forkGovernanceHeadRef,
   ]
 ) {
   if (!ciSource.includes(expected) || !ciGenerated.includes(expected)) {
     fail(`governed CI routing is missing exact ref ${expected}`);
   }
 }
-for (const expected of [governedHeadRef, c2bFixedFixtureHeadRef]) {
+for (
+  const expected of [
+    governedHeadRef,
+    c2bFixedFixtureHeadRef,
+    forkGovernanceHeadRef,
+  ]
+) {
   if (!governedCiSource.includes(expected)) {
     fail(`dedicated governed workflow is missing exact head ${expected}`);
   }
