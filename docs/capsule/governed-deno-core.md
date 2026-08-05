@@ -73,6 +73,15 @@ restoration corpus; release/supply-chain ownership begins only when release work
 is separately authorized. These role statements do not claim that a release
 process or independent builder exists today.
 
+While this fork has one qualified maintainer, its mutable `main` and current
+governed review target require a pull request, green required checks, resolved
+conversations, administrator enforcement, no force-push, no deletion, evidence
+readback, and maintainer self-review. GitHub requires zero approving reviews and
+does not require most-recent-push or CODEOWNER approval, because the sole author
+cannot satisfy those gates. External approval enforcement may be enabled when a
+second qualified maintainer is available. This does not waive any separate DCO,
+upstream-submission, product-admission, or independent security-review boundary.
+
 Changes to either governed source file require all of the following:
 
 - keep the two mechanisms as separately reviewable commits;
