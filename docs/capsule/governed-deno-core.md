@@ -51,7 +51,7 @@ Capsule. The retained v2.9.4 identities are:
 
 | Role                  | Protected ref                     | Commit                                     |
 | --------------------- | --------------------------------- | ------------------------------------------ |
-| Official anchor       | `capsule/anchor-v2.9.4`            | `14eea3160ae5834476aa3b9d317b8d41d991b982` |
+| Official anchor       | `capsule/anchor-v2.9.4`           | `14eea3160ae5834476aa3b9d317b8d41d991b982` |
 | First reviewed head   | `capsule/reviewed-head-v2.9.4-r1` | `9adb0b68b55bca81644827f1e7749a3acb091bed` |
 | First accepted merge  | `capsule/accepted-v2.9.4-r1`      | `ea18b9dc21ff8ebd19347be7095f47937ee14ec2` |
 | C2B reviewed head     | `capsule/reviewed-head-v2.9.4-r2` | `29b71f06c2df5ab06721ccbb7bc744fb8104356e` |
