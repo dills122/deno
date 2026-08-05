@@ -15,6 +15,7 @@ on:
     branches:
       - 'codex/governed-deno-core-0.409.0'
       - 'codex/c2b-fixed-fixture-runtime-0.409.0'
+      - 'codex/govern-fork-roles-v2.9.4-r3'
   workflow_dispatch:
 
 permissions:
